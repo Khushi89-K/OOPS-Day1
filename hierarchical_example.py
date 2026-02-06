@@ -56,59 +56,52 @@
 
 # Create one object of SavingsAccount and one object of CurrentAccount and test all methods.
 class BankAccount:
-    def __init__(self, account_holder, balance):
+    def __init__(self, account_holder):
         self.account_holder = account_holder
-        self.balance = balance
+        self.balance = 0
 
     def deposit(self, amount):
         self.balance += amount
         print(f"Deposited ₹{amount}")
 
     def withdraw(self, amount):
-        if amount <= self.balance:
+        if self.balance>=amount:
             self.balance -= amount
-            print(f"Withdrawn ₹{amount}")
+            self.display_balance()
         else:
             print("Insufficient balance")
 
     def display_balance(self):
-        print(f"Account Holder: {self.account_holder}")
-        print(f"Current Balance: ₹{self.balance}")
-
+        print("The balance is", self.balance)
 class SavingsAccount(BankAccount):
-    def __init__(self, account_holder, balance, interest_rate):
-        super().__init__(account_holder, balance)
-        self.interest_rate = interest_rate
+    def __init__(self, interest_rate,name):
+        temp_interest=interest_rate/100
+        self.interest_rate =temp_interest 
+        super().__init__(name)
 
     def add_interest(self):
-        interest = self.balance * self.interest_rate / 100
-        self.balance += interest
-        print(f"Interest added: ₹{interest}")
+        self.balance *=(1+self.interest_rate)
+        super().display_balance()
 
 class CurrentAccount(BankAccount):
-    def __init__(self, account_holder, balance, overdraft_limit):
-        super().__init__(account_holder, balance)
+    def __init__(self, overdraft_limit,name):
         self.overdraft_limit = overdraft_limit
+        super().__init__(name)
 
     def withdraw_with_overdraft(self, amount):
-        if amount <= self.balance + self.overdraft_limit:
+        if amount < self.balance + self.overdraft_limit:
             self.balance -= amount
-            print(f"Withdrawn ₹{amount} using overdraft facility")
+            super().display_balance()
         else:
             print("Overdraft limit exceeded")
 
 
-savings = SavingsAccount("Khushi", 10000, 3)
-savings.deposit(5000)
-savings.add_interest()
-savings.withdraw(1400)
-savings.display_balance()
+SA=SavingsAccount(10,"Raja")
+CA=CurrentAccount(100,"Raja")
 
-print("---------------------------")
+#SA.deposit(100)
+#SA.withdraw(30)
+#SA.add_interest()
 
-current = CurrentAccount("aishu", 5600, 800)
-current.deposit(2000)
-current.withdraw_with_overdraft(4000)
-current.display_balance()
-
-
+CA.deposit(500)
+CA.withdraw_with_overdraft(590)
