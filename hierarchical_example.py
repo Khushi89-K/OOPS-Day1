@@ -62,8 +62,7 @@ class BankAccount:
 
     def deposit(self, amount):
         self.balance += amount
-        print(f"Deposited ₹{amount}")
-
+        
     def withdraw(self, amount):
         if self.balance>=amount:
             self.balance -= amount
